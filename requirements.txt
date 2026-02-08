@@ -1,0 +1,7 @@
+opencv-python
+# To enable GPU support, install torch with CUDA:
+# pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu126
+torchvision
+ultralytics
+numpy
+pillow
