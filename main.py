@@ -18,7 +18,7 @@ import time
 
 # Tanzimat
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-print(f"Using device: {DEVICE}")
+print(f"Estefade az device: {DEVICE}")
 
 ASSETS_DIR = "assets"
 CAT_A_DIR = os.path.join(ASSETS_DIR, "cat_a")
@@ -44,13 +44,13 @@ COLOR_BLACK = (0, 0, 0)
 
 def load_yolo_model():
     # Load kardan model YOLO
-    print("Loading YOLO...")
+    print("Dar hale load kardan YOLO...")
     model = YOLO("yolov8n.pt") 
     return model
 
 def load_feature_extractor():
     # Load kardan ResNet baraye shenasayi
-    print("Loading ResNet18...")
+    print("Dar hale load kardan ResNet18...")
     weights = ResNet18_Weights.DEFAULT
     model = resnet18(weights=weights)
     
@@ -134,7 +134,7 @@ def load_reference_embeddings(directory, model, preprocess):
     return embeddings
 
 def main():
-    print("Starting Cat Ai Vison For Feeder...")
+    print("Shoroo Cat Ai Vison For Feeder...")
     
     if not os.path.exists(ASSETS_DIR):
         os.makedirs(ASSETS_DIR)
@@ -147,26 +147,26 @@ def main():
     emb_list_a = load_reference_embeddings(CAT_A_DIR, feature_model, preprocess)
     emb_list_b = load_reference_embeddings(CAT_B_DIR, feature_model, preprocess)
     
-    print(f"Loaded {len(emb_list_a)} images for Cat A")
-    print(f"Loaded {len(emb_list_b)} images for Cat B")
+    print(f"{len(emb_list_a)} aks baraye Cat A load shod")
+    print(f"{len(emb_list_b)} aks baraye Cat B load shod")
     
     if not emb_list_a:
-        print("Cat A not set. Press 'a' to add an image.")
+        print("Cat A set nashode. Dokme 'a' ro bezanid baraye ezafe kardan aks.")
     if not emb_list_b:
-        print("Cat B not set. Press 'b' to add an image.")
+        print("Cat B set nashode. Dokme 'b' ro bezanid baraye ezafe kardan aks.")
 
     # Ruhan kardan durbin
     cap = cv2.VideoCapture(0)
     if not cap.isOpened():
-        print("Camera error.")
+        print("Khataye Durbin.")
         return
 
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
-    print("\nSystem Ready.")
-    print("Press 'q' to quit.")
-    print("Press 'a' or 'b' to save cat.")
+    print("\nSystem Amade Ast.")
+    print("Dokme 'q' baraye khoruj.")
+    print("Dokme 'a' ya 'b' baraye zakhire gorbe.")
     
     while True:
         start_time = time.time()
@@ -198,7 +198,7 @@ def main():
                 embedding = get_embedding(feature_model, preprocess, cat_crop)
                 
                 # Shenasayi gorbe
-                cat_name = "Unknown"
+                cat_name = "Nashenas"
                 similarity_a = calculate_similarity(embedding, emb_list_a)
                 similarity_b = calculate_similarity(embedding, emb_list_b)
                 
@@ -215,18 +215,18 @@ def main():
                 distance = estimate_distance(bbox_h)
                 
                 # Mantegh dar feeder
-                lid_status = "CLOSED"
+                lid_status = "BASTE"
                 status_color = COLOR_RED
                 
                 if distance < DISTANCE_THRESHOLD:
                     if cat_name == "Cat A":
-                        lid_status = "OPEN (Lid A)"
+                        lid_status = "BAZ (Lid A)"
                         status_color = COLOR_GREEN
                     elif cat_name == "Cat B":
-                        lid_status = "OPEN (Lid B)"
+                        lid_status = "BAZ (Lid B)"
                         status_color = COLOR_GREEN
                     else:
-                        lid_status = "WAITING"
+                        lid_status = "MONTZER"
                         status_color = COLOR_YELLOW
                 
                 detected_cats.append({
@@ -269,7 +269,7 @@ def main():
             break
         elif key == ord('a'):
             if detected_cats:
-                print("Adding image for Cat A...")
+                print("Dar hale ezafe kardan aks baraye Cat A...")
                 cat = detected_cats[0]
                 
                 # Zakhire aks
@@ -280,11 +280,11 @@ def main():
                 
                 # Ezafe kardan be hafeze
                 emb_list_a.append(cat["embedding"])
-                print(f"Saved {filename}")
+                print(f"Zakhire shod {filename}")
                 
         elif key == ord('b'):
             if detected_cats:
-                print("Adding image for Cat B...")
+                print("Dar hale ezafe kardan aks baraye Cat B...")
                 cat = detected_cats[0]
                 
                 # Zakhire aks
@@ -295,11 +295,11 @@ def main():
                 
                 # Ezafe kardan be hafeze
                 emb_list_b.append(cat["embedding"])
-                print(f"Saved {filename}")
+                print(f"Zakhire shod {filename}")
 
     cap.release()
     cv2.destroyAllWindows()
-    print("Done.")
+    print("Tamam.")
 
 if __name__ == "__main__":
     main()
